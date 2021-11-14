@@ -1,7 +1,31 @@
+/**
+ * JournalAPI
+ *
+ * An API for storing journal entries along with
+ * location data, mood data, and weather data.
+ *
+ * This file handles all the journal entry information routes,
+ * and should enable our users to create update, get, and delete
+ * their entries.
+ *
+ * CIS 371 - Fall 2021
+ *
+ */
+
+/**********
+ * Load all the libraries we need.
+ **********/
+
 var express = require('express');
 var router = express.Router();
 var user = require('./users.js');
 var checkAuth = user.checkAuth;
+
+/**
+ * Create the schemas we will need.
+ * Point is just a GEOJson lat/long coordinate.
+ * Entry is a journal entry.
+ */
 
 // Pull in the mongoose library
 const mongoose = require('mongoose');
@@ -40,10 +64,11 @@ const entrySchema = new Schema({
 	weather: String
 });
 
+// Really don't need the one for Point, but eh...
 const Point = mongoose.model('Point', pointSchema);
 const Entry = mongoose.model('Entry', entrySchema);
 
-/* GET entry listing for logged in user. */
+/* GET full entry listing for logged in user. */
 router.get('/', checkAuth, async function(req, res, next) {
 	var entries = await Entry.find({ userId: req.user._id });
 	res.status(200);
@@ -69,6 +94,9 @@ router.get('/:entryId', checkAuth, async function(req, res, next){
 	}
 });
 
+/**
+ * Allow logged in user to create new entry.
+ */
 router.post('/', checkAuth, async function(req, res, next){
 	try {
 		if(!(req.body.entry && req.body.mood && req.body.location)){
@@ -89,6 +117,9 @@ router.post('/', checkAuth, async function(req, res, next){
 	}
 });
 
+/**
+ * Allow a user to modify their own entry.
+ */
 router.put('/:entryId', checkAuth, async function(req, res, next){
 	try {
 		var entry = await Entry.findOne({
@@ -120,6 +151,9 @@ router.put('/:entryId', checkAuth, async function(req, res, next){
 	}
 });
 
+/**
+ * Allow a user to delete one of their own entries.
+ */
 router.delete('/:entryId', checkAuth, async function(req, res,next){
 	try{
 		const entry = Entry.deleteOne({
