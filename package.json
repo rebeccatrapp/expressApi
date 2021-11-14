@@ -1,0 +1,24 @@
+{
+  "name": "expressapi",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "express": "~4.16.1",
+    "http-errors": "~1.6.3",
+    "jade": "~1.11.0",
+    "mongoose": "^6.0.12",
+    "package.json": "^2.0.1",
+    "passport": "^0.5.0",
+    "passport-http": "^0.3.0",
+    "pbkdf2": "^3.1.2",
+    "winston": "^3.3.3"
+  },
+  "devDependencies": {
+    "webpack-cli": "^4.9.1"
+  }
+}
