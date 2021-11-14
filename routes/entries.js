@@ -50,6 +50,25 @@ router.get('/', checkAuth, async function(req, res, next) {
 	res.json(entries);
 });
 
+/**
+ * Get single entry for logged in user
+ */
+
+router.get('/:entryId', checkAuth, async function(req, res, next){
+	try {
+		var entry = await Entry.findOne({
+			_id : req.params.entryId
+		});
+		if(entry.userId == req.user._id || req.user.admin == true){
+			res.json(entry);
+		} else {
+			res.status(404, "Not found.");
+		}
+	} catch(err){
+
+	}
+});
+
 router.post('/', checkAuth, async function(req, res, next){
 	try {
 		if(!(req.body.entry && req.body.mood && req.body.location)){
@@ -72,7 +91,7 @@ router.post('/', checkAuth, async function(req, res, next){
 
 router.put('/:entryId', checkAuth, async function(req, res, next){
 	try {
-		var entry = await Entry.find({
+		var entry = await Entry.findOne({
 			userId : req.user._id,
 			_id : req.params.entryId
 		});
@@ -84,6 +103,7 @@ router.put('/:entryId', checkAuth, async function(req, res, next){
 		}
 
 		if(!(req.body.entry && req.body.mood && req.body.location && req.body.weather)){
+			console.log(req.body);
 			var error = new Error('Missing required information.');
 			error.status = 400;
 			throw error;
@@ -108,8 +128,10 @@ router.delete('/:entryId', checkAuth, async function(req, res,next){
 		});
 
 		if(!entry){
-
+			res.status(404).send("Not found.");
+			next();
 		}
+
 	} catch(err){
 		return next(err);
 	}
