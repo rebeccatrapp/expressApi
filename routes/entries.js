@@ -80,17 +80,15 @@ router.get('/', checkAuth, async function(req, res, next) {
  */
 
 router.get('/:entryId', checkAuth, async function(req, res, next){
-	try {
-		var entry = await Entry.findOne({
-			_id : req.params.entryId
-		});
-		if(entry.userId == req.user._id || req.user.admin == true){
-			res.json(entry);
-		} else {
-			res.status(404, "Not found.");
-		}
-	} catch(err){
-
+	var entry = await Entry.findOne({
+		_id : req.params.entryId
+	});
+	if(entry.userId == req.user._id || req.user.admin == true){
+		res.json(entry);
+	} else {
+		var error = new Error("Not found.");
+		error.status = 404;
+			throw error;
 	}
 });
 
@@ -98,76 +96,63 @@ router.get('/:entryId', checkAuth, async function(req, res, next){
  * Allow logged in user to create new entry.
  */
 router.post('/', checkAuth, async function(req, res, next){
-	try {
-		if(!(req.body.entry && req.body.mood && req.body.location)){
-			var error = new Error('Missing required information.');
-			error.status = 400;
-			throw error;
-		}
-		var entry = new Entry({
-			userId: req.user._id,
-			entry: req.body.entry,
-			mood: req.body.mood,
-			location: req.body.location
-		});
-		entry.save();
-		res.status(200).send("Entry saved.");
-	} catch (err){
-		return next(err);
+	if(!(req.body.entry && req.body.mood && req.body.location)){
+		var error = new Error('Missing required information.');
+		error.status = 400;
+		throw error;
 	}
+	var entry = new Entry({
+		userId: req.user._id,
+		entry: req.body.entry,
+		mood: req.body.mood,
+		location: req.body.location
+	});
+	entry.save();
+	res.status(200).send("Entry saved.");
 });
 
 /**
  * Allow a user to modify their own entry.
  */
 router.put('/:entryId', checkAuth, async function(req, res, next){
-	try {
-		var entry = await Entry.findOne({
-			userId : req.user._id,
-			_id : req.params.entryId
-		});
+	var entry = await Entry.findOne({
+		userId : req.user._id,
+		_id : req.params.entryId
+	});
 
-		if(!entry){
-			var error = new Error('Entry not found.');
-			error.status = 404;
-			throw error;
-		}
-
-		if(!(req.body.entry && req.body.mood && req.body.location && req.body.weather)){
-			console.log(req.body);
-			var error = new Error('Missing required information.');
-			error.status = 400;
-			throw error;
-		}
-
-		entry.entry = req.body.entry;
-		entry.mood = req.body.mood;
-		entry.location = req.body.location;
-		entry.weather = req.body.weather;
-		entry.save();
-		res.status(200).send('Entry saved.');
-	} catch (err){
-		return next(err);
+	if(!entry){
+		var error = new Error('Entry not found.');
+		error.status = 404;
+		throw error;
 	}
+
+	if(!(req.body.entry && req.body.mood && req.body.location && req.body.weather)){
+		console.log(req.body);
+		var error = new Error('Missing required information.');
+		error.status = 400;
+		throw error;
+	}
+
+	entry.entry = req.body.entry;
+	entry.mood = req.body.mood;
+	entry.location = req.body.location;
+	entry.weather = req.body.weather;
+	entry.save();
+	res.status(200).send('Entry saved.');
 });
 
 /**
  * Allow a user to delete one of their own entries.
  */
 router.delete('/:entryId', checkAuth, async function(req, res,next){
-	try{
-		const entry = Entry.deleteOne({
-			userId : req.users._id,
-			_id : req.params.entryId
-		});
+	const entry = Entry.deleteOne({
+		userId : req.users._id,
+		_id : req.params.entryId
+	});
 
-		if(!entry){
-			res.status(404).send("Not found.");
-			next();
-		}
-
-	} catch(err){
-		return next(err);
+	if(!entry){
+		res.status(404).send("Not found.");
+		next();
 	}
 });
 
