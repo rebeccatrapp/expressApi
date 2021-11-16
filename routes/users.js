@@ -114,7 +114,9 @@ router.get('/', checkAuth, async function(req, res, next) {
 		var users = await User.find({})
 		res.json(users);
 	} else {
-		res.send(401);
+		var error = new Error("Not authorized.");
+		error.status = 401;
+		throw err;
 	}
 });
 
@@ -150,7 +152,9 @@ router.post('/', checkAuth, async function(req, res, next){
 		newUser.save();
 		res.send(200);
         } else {
-                res.send(401);
+		var error = new Error("Not authorized.");
+		error.status = 401;
+		throw error;
         }
 });
 
