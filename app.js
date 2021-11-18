@@ -80,7 +80,7 @@ var app = express();
 
 // view engine setup (for later!)
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+app.set('view engine', 'pug');
 
 app.use(passport.initialize());
 app.use(express.json());
