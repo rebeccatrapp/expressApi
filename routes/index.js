@@ -18,7 +18,7 @@ passport.use(new LocalStrategy(
    )
  }));
 
-var checkAuthLocal = passport.authenticate('local', { failureRedirect: '/login', session: true });
+var checkAuthLocal = passport.authenticate('local', { failureRedirect: '/', session: true });
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -31,10 +31,6 @@ router.get('/', function(req, res, next) {
 
 router.get('/about', function(req, res, next){
   res.render('about', { title: 'About MyJournal'});
-});
-
-router.get('/login', function(req, res, next){
-  res.render('login');
 });
 
 router.post('/login', checkAuthLocal, function(req, res, next){
