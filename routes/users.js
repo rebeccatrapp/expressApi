@@ -158,4 +158,4 @@ router.post('/', checkAuth, async function(req, res, next){
         }
 });
 
-module.exports = { checkAuth, router, User };
+module.exports = { checkAuth, router, User, validPassword };

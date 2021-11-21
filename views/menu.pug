@@ -1,0 +1,8 @@
+section.logo
+  img(src='./images/MyJournal-logos_transparent.png' height='200px')
+menu.menu
+  li: a(href='/') Home
+  li: a(href='/journal') Journal
+  li: a(href='/about') About
+  if user != null
+    li: a(href='/logout') Log Out

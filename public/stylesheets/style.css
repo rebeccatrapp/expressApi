@@ -1,8 +1,52 @@
 body {
-  padding: 50px;
+  padding: 1em;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
 a {
   color: #00B7FF;
+}
+
+.menu {
+  margin: 1em;
+  margin-top: 0em;
+  display: flex;
+  background-color: #0065a4;
+  color: white;	
+  list-style: none;
+}
+
+.menu li {
+	float: left;
+}
+
+.menu a {
+	padding: 1em;
+	display: block;
+	text-decoration: none;	
+	color: white;
+}
+
+.menu li a:hover {
+	background-color: white;
+	color: #0065a4;
+}
+
+.footer {
+  background-color: #0065a4;
+  color: white;
+  height: 2.5em;
+  margin: 1em;
+  text-align: center;
+}
+
+.logo {
+  background-color: #0065a4;
+  margin-left: 1em;
+  margin-right: 1em;
+  margin-bottom: -.5em;
+}
+
+.about {
+  margin: 3em;
 }

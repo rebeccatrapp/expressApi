@@ -12,12 +12,14 @@
  * Load all the libraries we need.
  **********/
 var createError = require('http-errors');
+var crypto = require('crypto');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var winston = require('winston');
 var mongoose = require('mongoose');
 var passport = require('passport');
+var session = require('express-session');
 
 
 /**********
@@ -77,16 +79,42 @@ var entriesRouter = require('./routes/entries.js');
  * the middleware and configurations.
  **********/
 var app = express();
+var secret = crypto.randomBytes(32).toString('hex');
+// We want to save information in a session
+// for the web interface.
+app.use(session({
+    secret: secret,
+    resave: true,
+    saveUninitialized: true
+}));
 
 // view engine setup (for later!)
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
+// Start passport and Ensure that the user information
+// is saved to the session.
 app.use(passport.initialize());
+app.use(passport.session());
+passport.serializeUser(function(user, done) {
+  done(null, user);
+});
+
+passport.deserializeUser(function(user, done) {
+  done(null, user);
+});
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Ensure the user object (if there is one logged in)
+// is available as a local var so templates can use it.
+app.use((req, res, next) => {
+    res.locals.user = req.user;
+    next();
+});
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter.router);

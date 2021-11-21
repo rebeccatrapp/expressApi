@@ -1,0 +1,15 @@
+extends layout
+
+block content
+	include ./menu.pug
+	table.table.table-striped
+		tr
+		th Date
+		th Mood
+		th Entry
+
+		each e in entries
+			tr
+			td= e.date
+			td= e.mood
+			td= e.entry 
