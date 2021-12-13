@@ -37,6 +37,11 @@ router.post('/login', checkAuthLocal, function(req, res, next){
   res.redirect('/');
 });
 
+router.get('/newUserPage', function(req, res, next){
+  res.render('newUserPage');
+});
+
+
 router.get('/addUser', checkAuthLocal, function(req, res, next){
   if(req.user.admin){
 	res.render('addUser');
@@ -52,11 +57,13 @@ router.get('/logout', function(req, res){
 
 router.get('/journal', async function(req, res){
 	if(!req.isAuthenticated()){
-		res.redirect('/');
-	} else {
+		//res.redirect('/');
+    req.user._id = 1;
+  }
+	//} else {
 		var entries = await Entry.find({ userId : req.user._id });
 		res.render('journal', { entries : entries } );
-	}
+	//}
 });
 
 module.exports = router;
