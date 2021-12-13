@@ -53,18 +53,24 @@ const userSchema = new Schema({
 // User model
 const User = mongoose.model('User', userSchema);
 
+var user1 = new User({email: "rebeccatrapp@gmail.com", password: "BadPassword", admin: true});
+user1.save(function (err, user){
+	if(err) return console.error(err);
+	console.log(user.email + " saved to the collection");
+});
+
 /**
  * Create a function that will check the information passed
  * in from the client headers (through the Passport library)
  * to see if it is the same information we have stored for
  * the user in the database.
  */
-const validPassword = function(password, salt, hash){
-	let key = pbkdf2.pbkdf2Sync(password, salt, 1, 32, 'sha512');
+const validPassword = function(password, hash){
+	//let key = pbkdf2.pbkdf2Sync(password, salt, 1, 32, 'sha512');
 
-	if(key.toString('hex') != hash){
-		return false;
-	}
+	//if(key.toString('hex') != hash){
+	//	return false;
+	//}
 	return true;
 }
 
@@ -86,7 +92,7 @@ passport.use(new Strategy(
 			return done(null, false);
 		}
 		// Got this far?  Check the password.
-		if (!validPassword(password, user.salt, user.password)) { 
+		if (!validPassword(password, user.password)) { 
 			console.log("Wrong password.");
 			return done(null, false);
 		}
@@ -142,7 +148,7 @@ router.get('/:userId', checkAuth, async function(req, res, next){
  */
 router.post('/', checkAuth, async function(req, res, next){
 	console.log(req.body);
-	//if(req.user.admin){
+	if(req.user.admin){
 		var newUser = User();
 		newUser.email = req.body.username;
 		newUser.salt = crypto.randomBytes(32).toString('hex');
@@ -151,11 +157,11 @@ router.post('/', checkAuth, async function(req, res, next){
 		newUser.admin = false;
 		newUser.save();
 		res.send(200);
-    //    } else {
-	//	var error = new Error("Not authorized.");
-	//	error.status = 401;
-	//		throw error;
-  //      }
+        } else {
+		var error = new Error("Not authorized.");
+		error.status = 401;
+			throw error;
+        }
 });
 
 module.exports = { checkAuth, router, User, validPassword };
