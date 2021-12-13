@@ -1,0 +1,17 @@
+extends layout 
+
+block content
+	include ./menu.pug
+	section.about
+	form(action='/newUser' method='post')
+		label(for='username'): b Username:
+		input(type='text' name='username')
+
+		label(for='password'): b Password:
+		input(type='password' name='password')
+
+		label(for='passwordVerify'): b Verify Password:
+		input(type='password' name='password')
+
+		button(type='submit') Submit
+		
