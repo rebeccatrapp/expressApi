@@ -1,0 +1,13 @@
+include ./menu.pug 
+form(action='/entries' method='post')
+    h1.newJournalTitle(contenteditable=true) New Journal Entry
+    p.newJournalMood(contenteditable=true) Type mood here. 
+    p.newJournalTextbox(contenteditable=true) Click here to edit and type out your thoughts and feelings here. 
+    <p class="codepen" data-height="500" data-theme-id="dark" data-default-tab="result" data-slug-hash="Gqakbo" data-editable="true" data-user="ste-vg" style="height: 500px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;">
+    <span>See the Pen <a href="https://codepen.io/ste-vg/pen/Gqakbo">
+    Animated Weather Cards</a> by Steve Gardner (<a href="https://codepen.io/ste-vg">@ste-vg</a>)
+    on <a href="https://codepen.io">CodePen</a>.</span>
+    </p>
+    <script async src="https://cpwebassets.codepen.io/assets/embed/ei.js"></script>
+
+    button(type="submit") Submit
