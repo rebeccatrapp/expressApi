@@ -56,12 +56,12 @@ const entrySchema = new Schema({
 	entry: {
 		type: String,
 		required: true
-	},
-	location: {
-		type: pointSchema,
-		required: true
-	},
-	weather: String
+	}
+	//location: {
+	//	type: pointSchema,
+	//	required: true
+	//},
+	//weather: String
 });
 
 // Really don't need the one for Point, but eh...
@@ -96,7 +96,7 @@ router.get('/:entryId', checkAuth, async function(req, res, next){
  * Allow logged in user to create new entry.
  */
 router.post('/', checkAuth, async function(req, res, next){
-	if(!(req.body.entry && req.body.mood && req.body.location)){
+	if(!(req.body.entry && req.body.mood)){
 		var error = new Error('Missing required information.');
 		error.status = 400;
 		throw error;
@@ -157,3 +157,4 @@ router.delete('/:entryId', checkAuth, async function(req, res,next){
 });
 
 module.exports = { router, Entry };
+

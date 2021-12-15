@@ -53,11 +53,6 @@ const userSchema = new Schema({
 // User model
 const User = mongoose.model('User', userSchema);
 
-var user1 = new User({email: "rebeccatrapp@gmail.com", password: "BadPassword", admin: true});
-user1.save(function (err, user){
-	if(err) return console.error(err);
-	console.log(user.email + " saved to the collection");
-});
 
 /**
  * Create a function that will check the information passed
@@ -65,7 +60,7 @@ user1.save(function (err, user){
  * to see if it is the same information we have stored for
  * the user in the database.
  */
-const validPassword = function(password, hash){
+const validPassword = function(password, salt, hash){
 	//let key = pbkdf2.pbkdf2Sync(password, salt, 1, 32, 'sha512');
 
 	//if(key.toString('hex') != hash){
@@ -146,22 +141,15 @@ router.get('/:userId', checkAuth, async function(req, res, next){
  * POST a new user.
  * Only administrators can add new users.
  */
-router.post('/', checkAuth, async function(req, res, next){
+router.post('/', async function(req, res, next){
 	console.log(req.body);
-	if(req.user.admin){
 		var newUser = User();
-		newUser.email = req.body.username;
+		newUser.email = req.body.newUsername;
 		newUser.salt = crypto.randomBytes(32).toString('hex');
-		console.log("Received: " + req.body.password);
-		newUser.password = pbkdf2.pbkdf2Sync(req.body.password, newUser.salt, 1, 32, 'sha512').toString('hex');
-		newUser.admin = false;
+		console.log("Received: " + req.body.newPassword);
+		newUser.password = pbkdf2.pbkdf2Sync(req.body.newPassword, newUser.salt, 1, 32, 'sha512').toString('hex');
 		newUser.save();
 		res.send(200);
-        } else {
-		var error = new Error("Not authorized.");
-		error.status = 401;
-			throw error;
-        }
 });
 
 module.exports = { checkAuth, router, User, validPassword };

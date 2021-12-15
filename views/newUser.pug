@@ -1,0 +1,8 @@
+include ./menu.pug 
+form(action='/users' method='post')
+	label(for='newUsername'): b Username:
+	input(type='text' name='newUsername')
+
+	label(for='newPassword'): b Password:
+	input(type='password' name='newPassword')
+	button(type='submit') Submit

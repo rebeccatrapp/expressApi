@@ -37,8 +37,8 @@ router.post('/login', checkAuthLocal, function(req, res, next){
   res.redirect('/');
 });
 
-router.get('/newUserPage', function(req, res, next){
-  res.render('newUserPage');
+router.get('/newUser', function(req, res, next){
+  res.render('newUser');
 });
 
 router.get('/addUser', checkAuthLocal, function(req, res, next){

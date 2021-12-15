@@ -1,10 +1,11 @@
+include ./header.pug
 section.logo
   img(src='./images/MyJournal.png' height='100px')
 menu.menu
   li: a(href='/') Home
   li: a(href='/about') About
-    li: a(href='/journal') Journal
+  li: a(href='/newUser') New User 
+  li: a(href='/journal') Journal
   if user != null
     li: a(href='/newJournalEntry') New Entry
     li: a(href='/logout') Log Out
-

@@ -51,6 +51,7 @@ if(process.env.NODE_ENV !== 'production'){
  * connection to use ssl by default.
  **********/
 const uri = 'mongodb+srv://rebeccatrapp:BadPassword@cluster0.lrrr4.mongodb.net/test'
+
 mongoose.connect(uri).
 	catch( error => 
 		{ 

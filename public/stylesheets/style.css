@@ -74,10 +74,12 @@ a {
 }
 
 .newJournalTextbox{
-  height: 10em;
   background-color: #80687a;
   color: white;
-  margin-top: -.5em;
+  margin-top: .5em;
+  margin-bottom: 1em;
+  width: 99%;
+  height: 10em;
 }
 
 .newJournalMood{
@@ -85,4 +87,12 @@ a {
   background-color: #80687a;
   color: white;
   margin-top: .5em;
+  width: 99%;
+}
+
+.submitButton{
+  margin: 1em;
+  height: 3em;
+  width: 6em;
+  margin-bottom: 3em;
 }
